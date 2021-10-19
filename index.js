@@ -1,6 +1,7 @@
 const colors = require('colors');
 const arg1 = +process.argv[2];
 const arg2 = +process.argv[3];
+const error = 'Простых чисел нет';
 
 const getPrimeNumbers = () => {
     const argumentsArr = [];
@@ -22,16 +23,19 @@ const getPrimeNumbers = () => {
 }
 
 const getNumbersOfColor = arr => {
-    if(!arr) return;
-
-    for (let i = 0; i < arr.length; i+=3) {
-        console.log(colors.green(arr[i]));
-        if (arr[i + 1]) console.log(colors.yellow(arr[i+1]));  
-        if (arr[i + 2]) console.log(colors.red(arr[i+2]));                       
+    if(arr.length) {
+        for (let i = 0; i < arr.length; i+=3) {
+            console.log(colors.green(arr[i]));
+            if (arr[i + 1]) console.log(colors.yellow(arr[i+1]));  
+            if (arr[i + 2]) console.log(colors.red(arr[i+2]));                       
+        }
+    } else {
+        console.error(colors.red(error));
     }
 }
 
 const numbers = getPrimeNumbers();
+
 getNumbersOfColor(numbers);
 
 
