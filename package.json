@@ -1,0 +1,25 @@
+{
+  "name": "node_hometask",
+  "version": "1.0.0",
+  "description": "node_hometask",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaksimMir/node_hometask.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaksimMir/node_hometask/issues"
+  },
+  "homepage": "https://github.com/MaksimMir/node_hometask#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1"
+  }
+}
