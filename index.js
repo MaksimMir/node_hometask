@@ -1,41 +1,40 @@
 const colors = require('colors');
-const arg1 = +process.argv[2];
-const arg2 = +process.argv[3];
-const error = 'Простых чисел нет';
+const { getArgument, getTimeRemaining } = require('./modules.js');
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+const date = process.argv[2];
 
-const getPrimeNumbers = () => {
-    const argumentsArr = [];
-    if (arg1 < 2) arg1 = 2;
-    if (isNaN(arg1) || isNaN(arg2)) {
-        console.log('Один из аргументов не является числом!');
-        return;
-    } else {
-        nextPrime:
-        for (let i = arg1; i <= arg2; i++) {
-            for (let j = 2; j < i; j++) {
-                if (i % j == 0) continue nextPrime;
-            }
-            argumentsArr.push(i);
-        }
-        
+var deadline = getArgument(date);
+
+function initializeClock(endtime) {
+   
+    function updateClock() {
+      const t = getTimeRemaining(endtime);
+      
+      const year = t.years;
+      const month = t.months;
+      const day = t.days;
+      const hour = ('0' + t.hours).slice(-2);
+      const minute = ('0' + t.minutes).slice(-2);
+      const second = ('0' + t.seconds).slice(-2);
+   
+      if (t.total <= 0) {
+        clearInterval(timeinterval);
+        emitter.emit('stop', colors.red('Time End'))
+      }
+      emitter.emit('start', `${year}-${month}-${day}-${hour}-${minute}-${second}`)
     }
-    return argumentsArr;
+   
+    updateClock();
+    const timeinterval = setInterval(updateClock, 1000);    
 }
 
-const getNumbersOfColor = arr => {
-    if(arr.length) {
-        for (let i = 0; i < arr.length; i+=3) {
-            console.log(colors.green(arr[i]));
-            if (arr[i + 1]) console.log(colors.yellow(arr[i+1]));  
-            if (arr[i + 2]) console.log(colors.red(arr[i+2]));                       
-        }
-    } else {
-        console.error(colors.red(error));
-    }
-}
+emitter.on('start', console.log);
+emitter.on('stop', console.log);
 
-const numbers = getPrimeNumbers();
+initializeClock(deadline);
 
-getNumbersOfColor(numbers);
+
+
 
 
