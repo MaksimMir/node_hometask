@@ -1,29 +1,43 @@
 const fs = require('fs');
-const IP1 = '89.123.1.41';
-const IP2 = '34.48.240.111';
+const path = require('path');
 const readline = require('readline');
 
-const rd = readline.createInterface({
-    input: fs.createReadStream('./access.log')
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
 
-rd.on('line', function(line) {
-    const arr = line.replace('\r', '').split('\n');
-    const arrIP1 = arr.filter(el => el.includes(IP1));
-    const arrIP2 = arr.filter(el => el.includes(IP2));
+const question = async (query) => new Promise(resolve => rl.question(query, resolve));
+const func = async () => {
+    const filePathOut = await question('Please inter the path to the file: ');
+    const filePathIn = await question('Please inter the path to the file: ');
+    const userIP = await question('Please inter IP: ');
+    const encoding = await question('Please inter the encoding: ');
 
-    arrIP1.forEach(element => {
-        fs.createWriteStream(`./${IP1}_requests.log`, {
-            encoding: 'utf-8',
-            flags: 'a'
-        }).write(element + '\n')
-    });
+    const pathOut = path.resolve(__dirname, filePathOut);
+    const pathIn = path.resolve(__dirname, filePathIn);
 
-    arrIP2.forEach(element => {
-        fs.createWriteStream(`./${IP2}_requests.log`, {
-            encoding: 'utf-8',
-            flags: 'a'
-        }).write(element + '\n')
-    });
-});
+    if (!fs.lstatSync(pathOut).isFile()) func();
 
+    const rd = readline.createInterface({
+        input: fs.createReadStream(pathOut),
+        terminal: false
+    })
+
+    rd.on('line', line => {
+        if (line.includes(userIP)) {
+            fs.createWriteStream(pathIn, {
+                encoding,
+                flags: 'a'
+            }).write(line + '\n')
+        } else {
+            console.log('Error. IP not found')
+        }
+    })
+
+    rl.close();
+}
+
+rl.on('close', () => console.log('Fin'))
+
+func()
