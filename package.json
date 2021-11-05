@@ -20,6 +20,8 @@
   "homepage": "https://github.com/MaksimMir/node_hometask#readme",
   "dependencies": {
     "colors": "^1.4.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "inquirer": "^8.2.0",
+    "yargs": "^17.2.1"
   }
 }
